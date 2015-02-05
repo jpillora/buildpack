@@ -1,4 +1,4 @@
 #!/bin/sh
 
-echo "HelloWorld"
+echo "Shell"
 exit 0
