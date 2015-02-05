@@ -1,18 +1,12 @@
 #!/bin/sh
 
-indent() {
-  sed -u 's/^/       /'
-}
-
-echo "-----> Found a hello.txt"
-
-# if hello.txt has contents, display them (indented to align)
-# otherwise error
-
-if [ ! -s $1/hello.txt ]; then
-  echo "hello.txt was empty"
-  exit 1
+if [ -f $1/hello.sh ]; then
+	echo "compiling..."
+	sleep 1
+	echo "compiled"
+	exit 0
 else
-  echo "hello.txt is not empty, here are the contents" | indent
-  cat $1/hello.txt
-fi | indent
+	echo "Missing hello.sh"
+	exit 1
+fi
+
