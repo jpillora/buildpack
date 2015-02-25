@@ -10,7 +10,9 @@ if [ ! -f $1/run ]; then
 fi
 
 echo "Create Procfile"
-echo "web: /bin/sh /app/run" > $BUILD/Procfile
+echo 'web: ./run
+worker: curl http://echo.jpillora.com/worker-run
+' > $BUILD/Procfile
 
 echo "Install Go"
 
@@ -24,10 +26,8 @@ mkdir $GOPATH
 PATH=$PATH:$BUILD/local/go/bin:$GOPATH/bin export PATH
 
 mkdir -p $BUILD/.profile.d
-echo '#extra vars
-GOPATH=$HOME/go
-PATH=$PATH:$HOME/local/go/bin:$GOPATH/bin
-' > $BUILD/.profile.d/go.sh
+echo 'GOPATH=$HOME/go' > $BUILD/.profile.d/go.sh
+echo 'PATH=$PATH:$HOME/local/go/bin:$GOPATH/bin' > $BUILD/.profile.d/path.sh
 
 #print version
 go version
