@@ -1,8 +1,8 @@
 #!/bin/sh
 
-BUILD_DIR=$1
-CACHE_DIR=$2
-ENV_DIR=$3
+BUILD=$1
+CACHE=$2
+ENV=$3
 
 if [ ! -f $1/run ]; then
 	echo "Missing $1/run"
@@ -10,34 +10,34 @@ if [ ! -f $1/run ]; then
 fi
 
 echo "Create Procfile"
-echo "web: /bin/sh /app/run" > $BUILD_DIR/Procfile
+echo "web: /bin/sh /app/run" > $BUILD/Procfile
 
 echo "Install Go"
 
-mkdir $BUILD_DIR/local
-curl -s https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C $BUILD_DIR/local -xzf -
-GOROOT=$BUILD_DIR/local/go export GOROOT
+mkdir $BUILD/local
+curl -s https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C $BUILD/local -xzf -
+GOROOT=$BUILD/local/go export GOROOT
 
-GOPATH=$BUILD_DIR/go export GOPATH
+GOPATH=$BUILD/go export GOPATH
 
 mkdir $GOPATH
-PATH=$PATH:$BUILD_DIR/local/go/bin:$GOPATH/bin export PATH
+PATH=$PATH:$BUILD/local/go/bin:$GOPATH/bin export PATH
 
-mkdir -p $BUILD_DIR/.profile.d
+mkdir -p $BUILD/.profile.d
 echo '#extra vars
 GOPATH=$HOME/go
 PATH=$PATH:$HOME/local/go/bin:$GOPATH/bin
-' > $BUILD_DIR/.profile.d/go.sh
+' > $BUILD/.profile.d/go.sh
 
 #print version
 go version
 
-echo "Found run script '$1/run'"
-chmod +x $1/run
+echo "Found run script '$BUILD/run'"
+chmod +x $BUILD/run
 
-if [ -f $1/compile ]; then
+if [ -f $BUILD/compile ]; then
 	echo "running user compile script..."
-	sh $1/compile "$@"
+	sh $BUILD/compile "$@"
 fi
 
 
