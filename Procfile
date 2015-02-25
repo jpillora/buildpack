@@ -1,1 +1,1 @@
-web: run $PORT
+web: /bin/sh run $PORT
