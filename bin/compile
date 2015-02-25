@@ -16,11 +16,15 @@ curl -s https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -
 GOROOT=$BUILD_DIR/local/go export GOROOT
 
 GOPATH=$BUILD_DIR/go export GOPATH
-echo "/app/go" > $ENV_DIR/GOPATH
 
 mkdir $GOPATH
 PATH=$PATH:$BUILD_DIR/local/go/bin:$GOPATH/bin export PATH
-echo "$PATH:/app/local/go/bin:$GOPATH/bin" > $ENV_DIR/PATH
+
+mkdir -p $build/.profile.d
+echo '#extra vars
+GOPATH=$HOME/go
+PATH=$PATH:$HOME/local/go/bin:$GOPATH/bin
+' > $build/.profile.d/go.sh
 
 #print version
 go version
