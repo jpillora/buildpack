@@ -13,13 +13,13 @@ echo "Install Go"
 
 mkdir $BUILD_DIR/local
 curl -s https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C $BUILD_DIR/local -xzf -
-GOROOT=$BUILD_DIR/local/go
+GOROOT=$BUILD_DIR/local/go export GOROOT
 
-GOPATH=$BUILD_DIR/go
+GOPATH=$BUILD_DIR/go export GOPATH
 echo "/app/go" > $ENV_DIR/GOPATH
 
 mkdir $GOPATH
-PATH=$PATH:$BUILD_DIR/local/go/bin:$GOPATH/bin
+PATH=$PATH:$BUILD_DIR/local/go/bin:$GOPATH/bin export PATH
 echo "$PATH:/app/local/go/bin:$GOPATH/bin" > $ENV_DIR/PATH
 
 #print version
