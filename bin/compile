@@ -16,7 +16,7 @@ echo "Current stack: $STACK"
 # echo "Create Procfile"
 # echo 'web: ./run' > $BUILD/Procfile
 
-if [ -d $CACHE/local ]; then
+if [ ! -d $CACHE ] || [ ! -d $CACHE/local ]; then
 
 	echo "Build cache $CACHE_VERSION"
 
