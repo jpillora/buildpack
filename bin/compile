@@ -6,64 +6,71 @@ CACHE_ROOT=$2
 CACHE=$CACHE_ROOT/versions/$CACHE_VERSION
 ENV=$3
 
-if [ ! -f $BUILD/run ]; then
-	echo "Missing $BUILD/run"
+GO_VERSION=1.4.2
+NODE_VERSION=0.12.0
+NODE_BUILD=node-v$NODE_VERSION-linux-x64
+
+if [ -f $BUILD/run ]; then
+	#set executable
+	chmod +x $BUILD/run
+else
+	echo "-----! Missing $BUILD/run"
 	exit 1
 fi
 
-#set executable
-chmod +x $BUILD/run
-
 if [[ $STACK != cedar* ]]; then
-	echo "Only cedar stacks are supported"
+	echo "-----! Only cedar stacks are supported"
 	exit 1
 fi
 
 rm -rf $CACHE
 
 if [ -d $CACHE ]; then
-	echo "Loading cache $CACHE_VERSION"
+	echo "-----> Using cache"
 else
-	echo "Build cache $CACHE_VERSION"
-
+	echo "-----> Build cache"
 	rm -rf $ROOT_CACHE/versions
-	mkdir -p $CACHE/local
-
-	echo "Install Node"
-	curl -s http://nodejs.org/dist/v0.12.0/node-v0.12.0-linux-x64.tar.gz | tar -C $CACHE/local -xzf -
-
-	echo "Install Go"
-	curl -s https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C $CACHE/local -xzf -
-
-	echo "Create environment profile"
-
+	mkdir -p $CACHE/jp
+	echo "       Install Node $NODE_VERSION"
+	curl -s http://nodejs.org/dist/v$NODE_VERSION/$NODE_BUILD.tar.gz | tar -C $CACHE/jp -xzf -
+	echo "       Install Go $GO_VERSION"
+	curl -s https://storage.googleapis.com/golang/go$GO_VERSION.linux-amd64.tar.gz | tar -C $CACHE/jp -xzf -
+	echo "       Create environment profile"
+	#this is for application environment
 	mkdir -p $CACHE/.profile.d
 	echo '#extra vars
 	export GOPATH=$HOME/go
-	export GOROOT=$HOME/local/go
-	export NODE_BIN=$HOME/local/node-v0.12.0-linux-x64/bin
-	PATH=$PATH:$HOME/local/go/bin:$GOPATH/bin:$NODE_BIN
+	export GOROOT=$HOME/jp/go
+	export NODE_BIN=$HOME/jp/$NODE_BUILD/bin
+	PATH=$PATH:$HOME/jp/go/bin:$GOPATH/bin:$NODE_BIN
 	' > $CACHE/.profile.d/vars.sh
 fi
+echo
 
-echo "Set environment"
+#this is for buildpack (compile) environment
 export GOPATH=$CACHE/go
-export GOROOT=$CACHE/local/go
-export NODE_BIN=$CACHE/local/node-v0.12.0-linux-x64/bin
-export PATH=$PATH:$CACHE/local/go/bin:$GOPATH/bin:$NODE_BIN
+export GOROOT=$CACHE/jp/go
+export NODE_BIN=$CACHE/jp/$NODE_BUILD/bin
+export PATH=$PATH:$CACHE/jp/go/bin:$GOPATH/bin:$NODE_BIN
 
-#setup from cache
-echo "Set files"
+#setup from cache (. means copy all files)
+echo "-----> Copy cache"
 cp -r $CACHE/. $BUILD || exit 1
+echo
 
-#print versions or die!
-echo -n "node version "
-node --version || exit 1
-go version || exit 1
+#print versions or die
+echo "-----> Runtime check"
+echo -n "       node version " && node --version || exit 1
+echo -n "       npm version " && npm --version || exit 1
+echo -n "       " && go version || exit 1
+echo
 
+#run user compile script
 if [ -f $BUILD/compile ]; then
-	echo "Running user 'compile' script"
-	sh $BUILD/compile "$@" || exit 1
+	echo "-----> Running user 'compile' script"
+	mkdir $CACHE/user
+	chmod +x $BUILD/compile
+	./$BUILD/compile $BUILD $CACHE/user $ENV || exit 1
 	rm $BUILD/compile
 fi
 
