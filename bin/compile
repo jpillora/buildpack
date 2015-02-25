@@ -1,7 +1,7 @@
 #!/bin/sh
 
 BUILD=$1
-CACHE_VERSION=v1
+CACHE_VERSION=v2
 CACHE_ROOT=$2
 CACHE=$CACHE_ROOT/versions/$CACHE_VERSION
 ENV=$3
@@ -25,31 +25,29 @@ if [ ! -d $CACHE ]; then
 
 	echo "Install Node"
 	curl -s http://nodejs.org/dist/v0.12.0/node-v0.12.0-linux-x64.tar.gz | tar -C $CACHE/local -xzf -
-	export NODE_BIN=$CACHE/local/node-v0.12.0-linux-x64/bin
 
 	echo "Install Go"
 	curl -s https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C $CACHE/local -xzf -
-	export GOROOT=$CACHE/local/go
-	export GOPATH=$CACHE/go
 
-	echo "Set environment"
-
-	mkdir $GOPATH
-	export PATH=$PATH:$CACHE/local/go/bin:$GOPATH/bin
+	echo "Create environment profile"
 
 	mkdir -p $CACHE/.profile.d
 	echo '#extra vars
 	export GOPATH=$HOME/go
 	export GOROOT=$HOME/local/go
 	export NODE_BIN=$HOME/local/node-v0.12.0-linux-x64/bin
-
 	PATH=$PATH:$HOME/local/go/bin:$GOPATH/bin:$NODE_BIN
 	' > $CACHE/.profile.d/vars.sh
 fi
 
+echo "Set environment"
+export GOPATH=$CACHE/go
+export GOROOT=$CACHE/local/go
+export NODE_BIN=$CACHE/local/node-v0.12.0-linux-x64/bin
+export PATH=$PATH:$CACHE/local/go/bin:$GOPATH/bin
+
 #setup from cache
-cp -r $CACHE/.profile.d $BUILD || exit 1
-cp -r $CACHE/local $BUILD || exit 1
+cp -r $CACHE/* $BUILD/ || exit 1
 
 #print versions
 echo "node `node --version || exit 1`"
