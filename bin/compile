@@ -24,8 +24,13 @@ mkdir $GOPATH
 PATH=$PATH:$BUILD/local/go/bin:$GOPATH/bin export PATH
 
 mkdir -p $BUILD/.profile.d
-echo 'GOPATH=$HOME/go' > $BUILD/.profile.d/go.sh
-echo 'PATH=$PATH:$HOME/local/go/bin:$GOPATH/bin' > $BUILD/.profile.d/path.sh
+echo '#extra vars
+export GOPATH=$HOME/go
+export GOROOT=$HOME/local/go
+
+PATH=$PATH:$HOME/local/go/bin:$GOPATH/bin
+
+' > $BUILD/.profile.d/vars.sh
 
 #print version
 go version
@@ -36,8 +41,8 @@ chmod +x $BUILD/run
 if [ -f $BUILD/compile ]; then
 	echo "running user compile script..."
 	sh $BUILD/compile "$@"
+	rm $BUILD/compile
 fi
-
 
 echo "Compiled!"
 
