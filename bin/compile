@@ -69,9 +69,10 @@ echo
 if [ -f $BUILD/compile ]; then
 	echo "-----> Running user 'compile' script"
 	mkdir $CACHE/user
-	chmod +x $BUILD/compile
-	.$BUILD/compile $BUILD $CACHE/user $ENV || exit 1
-	rm $BUILD/compile
+	cd $BUILD
+	chmod +x compile
+	./compile $BUILD $CACHE/user $ENV || exit 1
+	rm compile
 fi
 
 exit 0
