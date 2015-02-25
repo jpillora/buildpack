@@ -20,7 +20,7 @@ echo "/app/go" > $ENV_DIR/GOPATH
 
 mkdir $GOPATH
 PATH=$PATH:$BUILD_DIR/local/go/bin:$GOPATH/bin
-echo "$PATH:/app/local/go/bin:$GOPATH/bin" > $ENV_DIR/
+echo "$PATH:/app/local/go/bin:$GOPATH/bin" > $ENV_DIR/PATH
 
 #print version
 go version
