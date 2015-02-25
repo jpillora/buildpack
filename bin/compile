@@ -48,12 +48,12 @@ if [ ! -d $CACHE ] || [ ! -d $CACHE/local ]; then
 fi
 
 #setup from cache
-cp -r $CACHE/.profile.d $BUILD
-cp -r $CACHE/local $BUILD
+cp -r $CACHE/.profile.d $BUILD || exit 1
+cp -r $CACHE/local $BUILD || exit 1
 
 #print versions
-echo "node `node --version`"
-go version
+echo "node `node --version || exit 1`"
+go version || exit 1
 
 echo "Found run script '$BUILD/run'"
 chmod +x $BUILD/run
