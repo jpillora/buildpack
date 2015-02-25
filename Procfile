@@ -1,1 +1,1 @@
-web: go-heroku-example
+web: run $PORT
