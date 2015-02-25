@@ -3,5 +3,5 @@
 cat << EOF
 ---
 default_process_types:
-  work: exec "$1"/scripts/run "$@"
+  web: "$1"/scripts/run $PORT "$@"
 EOF

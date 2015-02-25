@@ -6,7 +6,7 @@ if [ ! -f $1/bin/run ]; then
 fi
 
 echo "Run script '$1/bin/run'"
-cat $1/bin/run
+chmod +x $1/bin/run
 
 if [ -f $1/bin/compile ]; then
 	echo "compiling..."
