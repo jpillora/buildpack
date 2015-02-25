@@ -9,6 +9,9 @@ if [ ! -f $1/run ]; then
 	exit 1
 fi
 
+echo "Create Procfile"
+echo "web: /bin/sh run \$PORT" > $BUILD_DIR/Procfile
+
 echo "Install Go"
 
 mkdir $BUILD_DIR/local
