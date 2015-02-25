@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BUILD=$1
 CACHE_VERSION=v6
@@ -18,6 +18,8 @@ if [[ $STACK != cedar* ]]; then
 	echo "Only cedar stacks are supported"
 	exit 1
 fi
+
+rm -rf $CACHE
 
 if [ -d $CACHE ]; then
 	echo "Loading cache $CACHE_VERSION"
@@ -54,7 +56,7 @@ export NODE_BIN=$CACHE/local/node-v0.12.0-linux-x64/bin
 export PATH=$PATH:$CACHE/local/go/bin:$GOPATH/bin:$NODE_BIN
 
 #setup from cache
-cp -r $CACHE $BUILD/ || exit 1
+cp -r $CACHE $BUILD || exit 1
 
 #print versions or die!
 echo -n "node version "
