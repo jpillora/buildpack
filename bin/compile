@@ -1,13 +1,16 @@
 #!/bin/sh
 
-if [ ! -f $1/scripts/run ]; then
-	echo "Missing hello.sh"
+if [ ! -f $1/bin/run ]; then
+	echo "Missing $1/bin/run"
 	exit 1
 fi
 
-if [ -f $1/scripts/compile ]; then
+echo "Run script:"
+cat $1/bin/run
+
+if [ -f $1/bin/compile ]; then
 	echo "compiling..."
-	exec "$1"/scripts/compile "$@"
+	exec "$1"/bin/compile "$@"
 	echo "compiled"
 fi
 
