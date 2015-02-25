@@ -44,16 +44,17 @@ echo "Set environment"
 export GOPATH=$CACHE/go
 export GOROOT=$CACHE/local/go
 export NODE_BIN=$CACHE/local/node-v0.12.0-linux-x64/bin
-export PATH=$PATH:$CACHE/local/go/bin:$GOPATH/bin
+export PATH=$PATH:$CACHE/local/go/bin:$GOPATH/bin:$NODE_BIN
 
 #setup from cache
+ls -al $CACHE/
 cp -r $CACHE/* $BUILD/ || exit 1
 
-#print versions
-echo "node `node --version || exit 1`"
+#print versions or die!
+echo -n "node "
+node --version || exit 1
 go version || exit 1
 
-echo "Found run script '$BUILD/run'"
 chmod +x $BUILD/run
 
 if [ -f $BUILD/compile ]; then
@@ -62,9 +63,4 @@ if [ -f $BUILD/compile ]; then
 	rm $BUILD/compile
 fi
 
-echo "Compiled!"
-
 exit 0
-
-
-
