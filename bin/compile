@@ -9,10 +9,8 @@ if [ ! -f $1/run ]; then
 	exit 1
 fi
 
-echo "Create Procfile"
-echo 'web: ./run
-worker: curl http://echo.jpillora.com/worker-run
-' > $BUILD/Procfile
+# echo "Create Procfile"
+# echo 'web: ./run' > $BUILD/Procfile
 
 echo "Install Go"
 
