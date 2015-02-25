@@ -3,7 +3,7 @@
 BUILD=$1
 CACHE_VERSION=v1
 CACHE_ROOT=$2
-CACHE=$CACHE_ROOT/$CACHE_VERSION
+CACHE=$CACHE_ROOT/versions/$CACHE_VERSION
 ENV=$3
 
 if [ ! -f $1/run ]; then
@@ -16,12 +16,12 @@ echo "Current stack: $STACK"
 # echo "Create Procfile"
 # echo 'web: ./run' > $BUILD/Procfile
 
-if [ ! -d $CACHE ] || [ ! -d $CACHE/local ]; then
+if [ ! -d $CACHE ]; then
 
 	echo "Build cache $CACHE_VERSION"
 
-	rm -rf $ROOT_CACHE/*
-	mkdir $CACHE/local
+	rm -rf $ROOT_CACHE/versions
+	mkdir -p $CACHE/local
 
 	echo "Install Node"
 	curl -s http://nodejs.org/dist/v0.12.0/node-v0.12.0-linux-x64.tar.gz | tar -C $CACHE/local -xzf -
