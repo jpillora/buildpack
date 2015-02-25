@@ -6,19 +6,26 @@ CACHE_ROOT=$2
 CACHE=$CACHE_ROOT/versions/$CACHE_VERSION
 ENV=$3
 
-if [ ! -f $1/run ]; then
-	echo "Missing $1/run"
+if [ ! -f $BUILD/run ]; then
+	echo "Missing $BUILD/run"
 	exit 1
 fi
 
-echo "Current stack: $STACK"
+#set executable
+chmod +x $BUILD/run
 
-# echo "Create Procfile"
-# echo 'web: ./run' > $BUILD/Procfile
+if [ $STACK eq "" ]; then
+	echo "Only 'cedar' stack supported"
+	exit 1
+fi
 
-if [ ! -d $CACHE ]; then
-
+if [ -d $CACHE ]; then
+	echo "Loading cache $CACHE_VERSION"
+else
 	echo "Build cache $CACHE_VERSION"
+
+	echo "Create Procfile"
+	echo 'web: ./run' > $CACHE/Procfile
 
 	rm -rf $ROOT_CACHE/versions
 	mkdir -p $CACHE/local
@@ -50,15 +57,13 @@ export PATH=$PATH:$CACHE/local/go/bin:$GOPATH/bin:$NODE_BIN
 cp -r $CACHE $BUILD/ || exit 1
 
 #print versions or die!
-echo -n "node "
+echo -n "node version "
 node --version || exit 1
 go version || exit 1
 
-chmod +x $BUILD/run
-
 if [ -f $BUILD/compile ]; then
-	echo "running user compile script..."
-	sh $BUILD/compile "$@"
+	echo "Running user 'compile' script"
+	sh $BUILD/compile "$@" || exit 1
 	rm $BUILD/compile
 fi
 

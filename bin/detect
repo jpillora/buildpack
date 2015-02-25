@@ -1,4 +1,4 @@
 #!/bin/sh
 
-echo "Shell"
+echo "JP Heroku Buildpack"
 exit 0
