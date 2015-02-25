@@ -38,12 +38,12 @@ else
 	echo "       Create environment profile"
 	#this is for application environment
 	mkdir -p $CACHE/.profile.d
-	echo '#extra vars
-	export GOPATH=$HOME/go
-	export GOROOT=$HOME/jp/go
-	export NODE_BIN=$HOME/jp/$NODE_BUILD/bin
-	PATH=$PATH:$HOME/jp/go/bin:$GOPATH/bin:$NODE_BIN
-	' > $CACHE/.profile.d/vars.sh
+	echo "#extra vars
+	export GOPATH=\$HOME/go
+	export GOROOT=\$HOME/jp/go
+	export NODE_BIN=\$HOME/jp/$NODE_BUILD/bin
+	PATH=\$PATH:\$HOME/jp/go/bin:\$GOPATH/bin:\$NODE_BIN
+	" > $CACHE/.profile.d/vars.sh
 fi
 echo
 
