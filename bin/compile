@@ -20,11 +20,11 @@ GOPATH=$BUILD_DIR/go export GOPATH
 mkdir $GOPATH
 PATH=$PATH:$BUILD_DIR/local/go/bin:$GOPATH/bin export PATH
 
-mkdir -p $build/.profile.d
+mkdir -p $BUILD_DIR/.profile.d
 echo '#extra vars
 GOPATH=$HOME/go
 PATH=$PATH:$HOME/local/go/bin:$GOPATH/bin
-' > $build/.profile.d/go.sh
+' > $BUILD_DIR/.profile.d/go.sh
 
 #print version
 go version
