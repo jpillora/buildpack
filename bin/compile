@@ -1,11 +1,30 @@
 #!/bin/sh
 
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
 if [ ! -f $1/bin/run ]; then
 	echo "Missing $1/bin/run"
 	exit 1
 fi
 
-echo "Run script '$1/bin/run'"
+echo "Install Go"
+
+mkdir $BUILD_DIR/local
+curl -s https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -C $BUILD_DIR/local -xzf -
+
+GOPATH=$BUILD_DIR/go
+echo "/app/go" > $ENV_DIR/GOPATH
+
+mkdir $GOPATH
+PATH=$PATH:$BUILD_DIR/local/go/bin:$GOPATH/bin
+echo "$PATH:/app/local/go/bin:$GOPATH/bin" > $ENV_DIR/
+
+#print version
+go version
+
+echo "Found run script '$1/bin/run'"
 chmod +x $1/bin/run
 
 if [ -f $1/bin/compile ]; then
@@ -15,4 +34,6 @@ if [ -f $1/bin/compile ]; then
 fi
 
 exit 0
+
+
 
