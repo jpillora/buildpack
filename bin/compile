@@ -4,8 +4,8 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-if [ ! -f $1/bin/run ]; then
-	echo "Missing $1/bin/run"
+if [ ! -f $1/run ]; then
+	echo "Missing $1/run"
 	exit 1
 fi
 
@@ -25,14 +25,16 @@ echo "$PATH:/app/local/go/bin:$GOPATH/bin" > $ENV_DIR/PATH
 #print version
 go version
 
-echo "Found run script '$1/bin/run'"
-chmod +x $1/bin/run
+echo "Found run script '$1/run'"
+chmod +x $1/run
 
-if [ -f $1/bin/compile ]; then
-	echo "compiling..."
-	exec "$1"/bin/compile "$@"
-	echo "compiled"
+if [ -f $1/compile ]; then
+	echo "running user compile script..."
+	sh $1/compile "$@"
 fi
+
+
+echo "Compiled!"
 
 exit 0
 
