@@ -10,7 +10,7 @@ if [ ! -f $1/run ]; then
 fi
 
 echo "Create Procfile"
-echo "web: /bin/sh run \$PORT" > $BUILD_DIR/Procfile
+echo "web: /bin/sh /app/run" > $BUILD_DIR/Procfile
 
 echo "Install Go"
 
