@@ -49,16 +49,16 @@ else
 fi
 echo
 
-#this is for buildpack (compile) environment
-export GOPATH=$CACHE/go
-export GOROOT=$CACHE/jp/go
-export NODE_BIN=$CACHE/jp/$NODE_BUILD/bin
-export PATH=$PATH:$CACHE/jp/go/bin:$GOPATH/bin:$NODE_BIN
-
 #setup from cache (. means copy all files)
 echo "-----> Copy cache"
 cp -r $CACHE/. $BUILD || exit 1
 echo
+
+#this is for buildpack (compile) environment
+export GOPATH=$BUILD/go
+export GOROOT=$BUILD/jp/go
+export NODE_BIN=$BUILD/jp/$NODE_BUILD/bin
+export PATH=$PATH:$BUILD/jp/go/bin:$GOPATH/bin:$NODE_BIN
 
 #print versions or die
 echo "-----> Runtime check"
