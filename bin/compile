@@ -23,8 +23,10 @@ if [[ $STACK != cedar* ]]; then
 	exit 1
 fi
 
+#DEV never use cache...
 rm -rf $CACHE
 
+#cache things
 if [ -d $CACHE ]; then
 	echo "-----> Using cache"
 else
@@ -68,10 +70,11 @@ echo
 #run user compile script
 if [ -f $BUILD/compile ]; then
 	echo "-----> Running user 'compile' script"
-	mkdir $CACHE/user
+	USER_CACHE=$CACHE/user
+	mkdir $USER_CACHE
 	cd $BUILD
 	chmod +x compile
-	./compile $BUILD $CACHE/user $ENV || exit 1
+	./compile $BUILD $USER_CACHE $ENV || exit 1
 	rm compile
 	echo
 fi
