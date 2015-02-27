@@ -73,6 +73,7 @@ if [ -f $BUILD/compile ]; then
 	chmod +x compile
 	./compile $BUILD $CACHE/user $ENV || exit 1
 	rm compile
+	echo
 fi
 
 exit 0
