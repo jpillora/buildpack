@@ -13,8 +13,8 @@ NODE_BUILD=node-v$NODE_VERSION-linux-x64
 if [ -f $BUILD/run ]; then
 	#set executable
 	chmod +x $BUILD/run
-else
-	echo "-----! Missing $BUILD/run"
+elif [ ! -f $BUILD/Procfile ]; then
+	echo "-----! You need a $BUILD/run or $BUILD/Procfile"
 	exit 1
 fi
 
