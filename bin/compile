@@ -41,21 +41,26 @@ else
 	export GOPATH=\$HOME/go
 	export GOROOT=\$HOME/jp/go
 	export NODE_BIN=\$HOME/jp/$NODE_BUILD/bin
-	PATH=\$PATH:\$HOME/jp/go/bin:\$GOPATH/bin:\$NODE_BIN
+	PATH=\$PATH:\$HOME/bin:\$HOME/jp/go/bin:\$GOPATH/bin:\$NODE_BIN
 	" > $CACHE/.profile.d/vars.sh
 fi
 echo
 
-#setup from cache (. means copy all files)
-echo "-----> Copy cache"
-cp -r $CACHE/. $BUILD || exit 1
-echo
-
 #this is for buildpack (compile) environment
-export GOPATH=$BUILD/go
-export GOROOT=$BUILD/jp/go
-export NODE_BIN=$BUILD/jp/$NODE_BUILD/bin
-export PATH=$PATH:$BUILD/jp/go/bin:$GOPATH/bin:$NODE_BIN
+export GOPATH=$CACHE/go
+export GOROOT=$CACHE/jp/go
+export NODE_BIN=$CACHE/jp/$NODE_BUILD/bin
+export PATH=$PATH:$CACHE/jp/go/bin:$GOPATH/bin:$NODE_BIN
+
+#run user compile script
+if [ -f $BUILD/compile ]; then
+	echo "-----> Running user 'compile' script"
+	cd $BUILD
+	chmod +x compile
+	./compile $BUILD $CACHE $ENV || exit 1
+	rm compile
+	echo
+fi
 
 #print versions or die
 echo "-----> Runtime check"
@@ -64,16 +69,9 @@ echo -n "       npm version " && npm --version || exit 1
 echo -n "       " && go version || exit 1
 echo
 
-#run user compile script
-if [ -f $BUILD/compile ]; then
-	echo "-----> Running user 'compile' script"
-	USER_CACHE=$CACHE/user
-	mkdir $USER_CACHE
-	cd $BUILD
-	chmod +x compile
-	./compile $BUILD $USER_CACHE $ENV || exit 1
-	rm compile
-	echo
-fi
+#setup from cache (. means copy all files)
+echo "-----> Copy cache"
+cp -r $CACHE/. $BUILD || exit 1
+echo
 
 exit 0
