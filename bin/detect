@@ -1,4 +1,4 @@
 #!/bin/sh
 
-echo "JP Heroku Buildpack"
+echo "JPillora Buildpack"
 exit 0
