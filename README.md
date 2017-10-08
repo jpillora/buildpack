@@ -1,6 +1,6 @@
 ## jpillora/buildpack
 
-A simple buildpack
+A simple buildpack with Go and Node installed
 
 ### Install
 
@@ -8,7 +8,9 @@ A simple buildpack
 heroku config:set BUILDPACK_URL=http://github.com/jpillora/buildpack.git
 ```
 
-On load, Node and Go will be installed. Warning: `$GOPATH` is used instead of `godep`.
+Note
+
+* Sets up a `GOPATH` so `go get <my-awesome-tool>` and `my-awesome-tool --help` will work
 
 ### Usage
 
@@ -30,7 +32,7 @@ On load, Node and Go will be installed. Warning: `$GOPATH` is used instead of `g
 
 #### MIT License
 
-Copyright © 2015 &lt;dev@jpillora.com&gt;
+Copyright © 2017 &lt;dev@jpillora.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

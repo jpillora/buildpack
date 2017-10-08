@@ -1,13 +1,13 @@
 #!/bin/bash
 
 BUILD=$1
-CACHE_VERSION=v4
+CACHE_VERSION=v5
 CACHE_ROOT=$2
 CACHE=$CACHE_ROOT/versions/$CACHE_VERSION
 ENV=$3
 
-GO_VERSION=1.6.2
-NODE_VERSION=0.12.0
+GO_VERSION=1.9.1
+NODE_VERSION=8.6.0
 NODE_BUILD=node-v$NODE_VERSION-linux-x64
 
 if [ -f $BUILD/run ]; then
@@ -42,7 +42,7 @@ else
 	export GOROOT=\$HOME/jp/go
 	export NODE_BIN=\$HOME/jp/$NODE_BUILD/bin
 	PATH=\$PATH:\$HOME/bin:\$HOME/jp/go/bin:\$GOPATH/bin:\$NODE_BIN
-	" > $CACHE/.profile.d/vars.sh
+	" >$CACHE/.profile.d/vars.sh
 fi
 echo
 
